@@ -7,6 +7,13 @@ services:
     ports:
       - "1883:1883"
 
+  mqtt-broker2:
+    build:
+      context: .
+      dockerfile: Dockerfile-mosquitto
+    ports:
+      - "1884:1884"
+
   python-publisher:
     build:
       context: .
