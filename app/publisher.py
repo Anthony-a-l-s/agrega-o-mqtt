@@ -6,14 +6,13 @@ import statistics as st
 from typing import List
 import json
 
-
 coletores = []
 for i in range(4):
     coletores.append(Coletor(i, 5, 1))
 
 client = paho.Client()
 
-if client.connect("localhost", 1883, 60) != 0:
+if client.connect("192.168.100.14", 1883, 60) != 0:
     print("Couldn't connect to the mqtt broker")
     sys.exit(1)
 

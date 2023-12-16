@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 EXPOSE 1883
 
 
-CMD ["python", "app/publisher.py"] & CMD ["python", "app/subscriber.py"]
+CMD ["python", "app/subscriber.py"]

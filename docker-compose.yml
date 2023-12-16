@@ -1,31 +1,44 @@
 version: "3"
 services:
-  mqtt-broker:
+  mosquitto-1:
     build:
       context: .
-      dockerfile: Dockerfile-mosquitto
+      dockerfile: Dockerfile-mosquitto-1
+    image: eclipse-mosquitto:2.0.14
+    container_name: mosquitto-1
     ports:
       - "1883:1883"
+    volumes:
+      - ./mosquitto-1.conf:/mosquitto/config/mosquitto.conf
 
-  mqtt-broker2:
+  mosquitto-2:
     build:
       context: .
-      dockerfile: Dockerfile-mosquitto
+      dockerfile: Dockerfile-mosquitto-2
+    image: eclipse-mosquitto:2.0.14
+    container_name: mosquitto-2
     ports:
-      - "1884:1884"
+      - "1884:1883"
+    volumes:
+      - ./mosquitto-2.conf:/mosquitto/config/mosquitto.conf
 
   python-publisher:
     build:
       context: .
-      dockerfile: Dockerfile-python
+      dockerfile: Dockerfile-publisher
     depends_on:
-      - mqtt-broker
+      - mosquitto-1
+      - mosquitto-2
+
   
   python-subscriber:
     build:
       context: .
-      dockerfile: Dockerfile-python
+      dockerfile: Dockerfile-subscriber
     depends_on:
-      - mqtt-broker
-    
+      - mosquitto-1
+      - mosquitto-2
+  
+
+
 
