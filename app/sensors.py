@@ -1,6 +1,7 @@
 import random
 import json
 from typing import List
+from datetime import datetime
 
 class Sensor:
     def __init__(self, num):
@@ -8,7 +9,7 @@ class Sensor:
 
     def coletar(self):
         return random.randint(20, 40)
-    
+
 class Atuador:
     ativo = False
 
@@ -25,24 +26,25 @@ class Atuador:
 
 class Coletor:
     id_coletor: int
-    sensores: List[Sensor]  = list()
-    atuadores: List[Atuador] = list()
-    def __init__(self, id, num_s, num_a):
+    sensores: List[Sensor] = list()
+
+    def __init__(self, id, num_s):
         self.id_coletor = id
-        self.num_sensores  = num_s
-        self.num_atuadores = num_a
+        self.num_sensores = num_s
+        self.sensores = [Sensor(i) for i in range(1, self.num_sensores + 1)]
 
-        self.sensores  = []
-        self.atuadores = []
-
-        for i in range(self.num_sensores):
-            self.sensores.append(Sensor(i))
-        for i in range(self.num_atuadores):
-            self.atuadores.append(Atuador(i))
-    
     def coletar_dados(self):
-        coletor_dic = {"id": self.id_coletor}
-        for i, sensor in enumerate(self.sensores):
-            coletor_dic["sensor {}".format(i)] = sensor.coletar()
-        object_json = json.dumps(coletor_dic, indent=4)
+        coletor_data = []
+        for sensor in self.sensores:
+            sensor_data = {
+                "id_coletor": self.id_coletor,
+                "id": sensor.id,
+                "value": sensor.coletar(),
+                "type": "temperatura", 
+                "date": datetime.now().isoformat(),
+                "unitMeasurement": "C",  
+            }
+            coletor_data.append(sensor_data)
+
+        object_json = json.dumps(coletor_data, indent=4)
         return object_json
