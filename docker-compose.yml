@@ -4,22 +4,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-mosquitto-1
-    image: eclipse-mosquitto:2.0.14
     container_name: mosquitto-1
     ports:
-      - "1883:1883"
+      - "1890:1890"
     volumes:
+      - mosquitto-1-data:/mosquitto/data
+      - mosquitto-1-log:/mosquitto/log
       - ./mosquitto-1.conf:/mosquitto/config/mosquitto.conf
 
   mosquitto-2:
     build:
       context: .
       dockerfile: Dockerfile-mosquitto-2
-    image: eclipse-mosquitto:2.0.14
     container_name: mosquitto-2
     ports:
-      - "1884:1883"
+      - "1891:1890"
     volumes:
+      - mosquitto-2-data:/mosquitto/data
+      - mosquitto-2-log:/mosquitto/log
       - ./mosquitto-2.conf:/mosquitto/config/mosquitto.conf
 
   python-publisher:
@@ -39,6 +41,11 @@ services:
       - mosquitto-1
       - mosquitto-2
   
+volumes:
+  mosquitto-1-data:
+  mosquitto-1-log:
+  mosquitto-2-data:
+  mosquitto-2-log:
 
 
 
