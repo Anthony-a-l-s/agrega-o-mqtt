@@ -22,9 +22,8 @@ while (True):
 
     time.sleep(2)
     for coletor in coletores:
-        msg = json.loads(coletor.coletar_dados())
-        # dados.append(st.mean(coletor.coletar_dados()))
-        # m_temp = str(st.mean(dados))
-        client.publish("temperature_topic", str(msg), 0)
+        dados = json.loads(coletor.coletar_dados())
+        for sensor_data in dados:
+                client.publish("temperature_topic", json.dumps(sensor_data),0)
 
 client.disconnect()

@@ -12,40 +12,18 @@ services:
       - mosquitto-1-log:/mosquitto/log
       - ./mosquitto-1.conf:/mosquitto/config/mosquitto.conf
 
-  mosquitto-2:
-    build:
-      context: .
-      dockerfile: Dockerfile-mosquitto-2
-    container_name: mosquitto-2
-    ports:
-      - "1891:1890"
-    volumes:
-      - mosquitto-2-data:/mosquitto/data
-      - mosquitto-2-log:/mosquitto/log
-      - ./mosquitto-2.conf:/mosquitto/config/mosquitto.conf
-
   python-publisher:
     build:
       context: .
       dockerfile: Dockerfile-publisher
     depends_on:
       - mosquitto-1
-      - mosquitto-2
+  
 
-  
-  python-subscriber:
-    build:
-      context: .
-      dockerfile: Dockerfile-subscriber
-    depends_on:
-      - mosquitto-1
-      - mosquitto-2
-  
+
 volumes:
   mosquitto-1-data:
   mosquitto-1-log:
-  mosquitto-2-data:
-  mosquitto-2-log:
 
 
 
